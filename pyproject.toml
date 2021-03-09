@@ -6,6 +6,7 @@ authors = ["Thales Macedo Garitezi <thalesmg@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
+PyGithub = "^1.54.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

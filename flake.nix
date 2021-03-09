@@ -23,14 +23,14 @@
           # defaultPackage.x86_64-linux = self.packages.x86_64-linux.hello;
 
           defaultPackage = pkgs.poetry2nix.mkPoetryApplication {
-            projectDir = self;
+            projectDir = ./.;
           };
 
-          devShell = pkgs.mkShell {
-            buildInputs = [
-              pkgs.python39Packages.PyGithub
-            ];
-          };
+          # devShell = pkgs.mkShell {
+          #   buildInputs = [
+          #     # pkgs.python39Packages.PyGithub
+          #   ];
+          # };
         }
     );
 }
