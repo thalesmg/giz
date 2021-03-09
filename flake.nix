@@ -16,21 +16,16 @@
             poetry2nix-src.overlay
           ];
         };
+        giz = pkgs.poetry2nix.mkPoetryApplication {
+          projectDir = ./.;
+        };
       in
         {
           # packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
 
           # defaultPackage.x86_64-linux = self.packages.x86_64-linux.hello;
 
-          defaultPackage = pkgs.poetry2nix.mkPoetryApplication {
-            projectDir = ./.;
-          };
-
-          # devShell = pkgs.mkShell {
-          #   buildInputs = [
-          #     # pkgs.python39Packages.PyGithub
-          #   ];
-          # };
+          defaultPackage = giz;
         }
     );
 }
