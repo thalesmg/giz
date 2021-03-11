@@ -2,7 +2,7 @@ import argparse
 import os
 import pathlib
 import sys
-from github.GithubObject import NotSet
+from github.GithubObject import _NotSetType
 
 from . import core as giz
 
@@ -49,7 +49,7 @@ def main(argv=None):
         "--description",
         "-d",
         required=False,
-        default=NotSet,
+        default=_NotSetType(),
         help="optional description for the gist",
     )
     create_parser.add_argument(
@@ -57,7 +57,7 @@ def main(argv=None):
         type=pathlib.PosixPath,
         required=False,
         default=None,
-        help="destination directory to clone the gist into; defaults to current dir",
+        help="destination directory to clone the gist into;" " defaults to current dir",
     )
     create_parser.add_argument(
         "--pass-path",
