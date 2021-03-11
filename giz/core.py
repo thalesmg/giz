@@ -22,16 +22,13 @@ def clone_gist(gist: Gist, name: str):
 
 
 def create_gist(
-        gh: Github,
-        name: str,
-        filepaths: List[PosixPath],
-        public: bool = False,
-        description: Union[str, Literal[NotSet]] = NotSet
+    gh: Github,
+    name: str,
+    filepaths: List[PosixPath],
+    public: bool = False,
+    description: Union[str, Literal[NotSet]] = NotSet,
 ):
-    files = {
-        f.name: InputFileContent(f.read_text())
-        for f in filepaths
-    }
+    files = {f.name: InputFileContent(f.read_text()) for f in filepaths}
     u = gh.get_user()
     gist = u.create_gist(public, files, description)
     clone_gist(gist, name)
