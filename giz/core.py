@@ -1,6 +1,6 @@
 from github import Github, InputFileContent
 from github.Gist import Gist
-from github.GithubObject import _NotSetType
+from github.GithubObject import _NotSetType, NotSet
 from pathlib import PosixPath
 import subprocess
 from typing import List, Union
@@ -26,7 +26,7 @@ def create_gist(
     name: str,
     filepaths: List[PosixPath],
     public: bool = False,
-    description: Union[str, _NotSetType] = _NotSetType(),
+    description: Union[str, _NotSetType] = NotSet,
 ):
     files = {f.name: InputFileContent(f.read_text()) for f in filepaths}
     u = gh.get_user()

@@ -1,22 +1,39 @@
 import argparse
+import json
 import os
-import pathlib
 import sys
-from github.GithubObject import _NotSetType
+from pathlib import PosixPath
+from github.GithubObject import _NotSetType, NotSet
 
 from . import core as giz
+
+
+def load_default_pass_path():
+    base_path = PosixPath(
+        os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config"))
+    )
+    config_path = base_path / "giz" / "config.json"
+    if not config_path.exists():
+        print("default config file does not exist."
+              " either create it or pass the pass path as an argument.")
+        exit(1)
+    else:
+        config = json.loads(config_path.read_text())
+        return config["pass-path"]
 
 
 def create(args):
     if args.dest_dir:
         os.chdir(args.dest_dir)
 
-    dest = pathlib.PosixPath(args.name)
+    dest = PosixPath(args.name)
     if dest.exists():
         print(f"destination {dest.absolute()} already exists. aborting.")
         exit(1)
 
-    gh = giz.auth(args.pass_path)
+    pass_path = args.pass_path or load_default_pass_path()
+
+    gh = giz.auth(pass_path)
     giz.create_gist(
         gh,
         args.name,
@@ -28,7 +45,7 @@ def create(args):
 
 def main(argv=None):
     if not argv:
-        argv = sys.argv[1:]
+        argv = sys.argv[1:] or ["-h"]
 
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(dest="command")
@@ -49,12 +66,12 @@ def main(argv=None):
         "--description",
         "-d",
         required=False,
-        default=_NotSetType(),
+        default=NotSet,
         help="optional description for the gist",
     )
     create_parser.add_argument(
         "--dest-dir",
-        type=pathlib.PosixPath,
+        type=PosixPath,
         required=False,
         default=None,
         help="destination directory to clone the gist into;" " defaults to current dir",
@@ -62,13 +79,14 @@ def main(argv=None):
     create_parser.add_argument(
         "--pass-path",
         type=str,
-        required=True,
+        required=False,
+        default=None,
         help="password-store path where the github token is stored",
     )
     create_parser.add_argument(
         "files",
         nargs="+",
-        type=pathlib.PosixPath,
+        type=PosixPath,
         help="the files that will compose the gist",
     )
     parsed = parser.parse_args(argv)
