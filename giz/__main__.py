@@ -40,6 +40,9 @@ def create(args):
         args.public,
         args.description,
     )
+    if args.remove:
+        for f in args.files:
+            os.remove(f)
 
 
 def main(argv=None):
@@ -67,6 +70,14 @@ def main(argv=None):
         required=False,
         default=NotSet,
         help="optional description for the gist",
+    )
+    create_parser.add_argument(
+        "--remove",
+        "-r",
+        action="store_true",
+        default=False,
+        required=False,
+        help="whether to delete the input files after cloning; default is False",
     )
     create_parser.add_argument(
         "--pass-path",
