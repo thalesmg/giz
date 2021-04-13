@@ -13,7 +13,7 @@ giz create -o /tmp/mygist -d "my gist description" ./a.txt ./src/b.txt
 
 ** Installation
 
-*** Using `nix-env`
+*** Using ~nix-env~
 
 #+BEGIN_SRC sh
 nix-env -i -f https://github.com/thalesmg/giz/archive/master.tar.gz
@@ -21,7 +21,7 @@ nix-env -i -f https://github.com/thalesmg/giz/archive/master.tar.gz
 
 *** Simple link
 
-(here, it is assumed that `/home/user/bin` in the current user's PATH)
+(here, it is assumed that =/home/user/bin= in the current user's PATH)
 
 #+BEGIN_SRC sh
 nix build .
