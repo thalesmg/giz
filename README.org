@@ -1,0 +1,50 @@
+* giz
+
+Create gists from the command line and track them with git.
+
+** Usage
+
+Create a gist from files =a.txt= and =src/b.txt= with a description clone
+the result into =/tmp/mygist=.
+
+#+BEGIN_SRC sh
+giz create -o /tmp/mygist -d "my gist description" ./a.txt ./src/b.txt
+#+END_SRC
+
+** Installation
+
+*** Using `nix-env`
+
+#+BEGIN_SRC sh
+nix-env -i -f https://github.com/thalesmg/giz/archive/master.tar.gz
+#+END_SRC
+
+*** Simple link
+
+(here, it is assumed that `/home/user/bin` in the current user's PATH)
+
+#+BEGIN_SRC sh
+nix build .
+ln -sf $PWD/result/bin/giz /home/user/bin/giz
+#+END_SRC
+
+** Configuration
+
+Create a =config.json= file at =XDG_CONFIG_HOME/giz= (or
+=$HOME/.config/giz=) with the path that [[https://www.passwordstore.org/][=pass=]] will use to get yout
+Github personal access token (PAT). This PAT must have at least the
+=gist= scope.
+
+Example:
+
+#+BEGIN_SRC json
+{
+    "pass-path": "github.com/tokens/giz-token"
+}
+#+END_SRC
+
+Or else pass that path as an argument with =--pass-path=:
+
+#+BEGIN_SRC sh
+giz create --pass-path "github.com/tokens/giz-token" -o /tmp/mygist a.txt
+#+END_SRC
