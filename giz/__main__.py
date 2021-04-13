@@ -14,8 +14,10 @@ def load_default_pass_path():
     )
     config_path = base_path / "giz" / "config.json"
     if not config_path.exists():
-        print("default config file does not exist."
-              " either create it or pass the pass path as an argument.")
+        print(
+            "default config file does not exist."
+            " either create it or pass the pass path as an argument."
+        )
         exit(1)
     else:
         config = json.loads(config_path.read_text())
@@ -23,12 +25,9 @@ def load_default_pass_path():
 
 
 def create(args):
-    if args.dest_dir:
-        os.chdir(args.dest_dir)
-
-    dest = PosixPath(args.name)
-    if dest.exists():
-        print(f"destination {dest.absolute()} already exists. aborting.")
+    out = PosixPath(args.out)
+    if out.exists():
+        print(f"destination {out.absolute()} already exists. aborting.")
         exit(1)
 
     pass_path = args.pass_path or load_default_pass_path()
@@ -36,7 +35,7 @@ def create(args):
     gh = giz.auth(pass_path)
     giz.create_gist(
         gh,
-        args.name,
+        args.out,
         args.files,
         args.public,
         args.description,
@@ -53,7 +52,7 @@ def main(argv=None):
         "create", help="create a new gist and clone it locally"
     )
     create_parser.add_argument(
-        "--name", "-n", required=True, help="folder name to clone the gist under"
+        "--out", "-o", required=True, help="folder name to clone the gist under"
     )
     create_parser.add_argument(
         "--public",
@@ -68,13 +67,6 @@ def main(argv=None):
         required=False,
         default=NotSet,
         help="optional description for the gist",
-    )
-    create_parser.add_argument(
-        "--dest-dir",
-        type=PosixPath,
-        required=False,
-        default=None,
-        help="destination directory to clone the gist into;" " defaults to current dir",
     )
     create_parser.add_argument(
         "--pass-path",
